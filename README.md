@@ -10,6 +10,8 @@
 1. ### Page de Présentation des Travaux
 - Développement de la mise en page à partir des maquettes fournies via Figma.
 - Utilisation de JavaScript pour rendre la page interactive (gestion des événements, manipulation du DOM).
+- Faire le CSS et le HTML correspondante à la maquette.
+- Ne pas utiliser des framework comme *Boostrapp* *Jqery*.
 
 2. ### Page de Connexion pour l'Administrateur
 - Création d'une page de connexion sécurisée pour l'administrateur du site.
@@ -48,16 +50,20 @@
 
 ## **Installation du projet**
 
-1. -Le développeur doit aller sur le [lien Github](https://github.com/OpenClassrooms-Student-Center/Portfolio-architecte-sophie-bluel).
-2. -Il doit cloner le projet en utilisant le terminal
+1. Le développeur doit aller sur le [lien Github](https://github.com/OpenClassrooms-Student-Center/Portfolio-architecte-sophie-bluel).
+2. Il doit cloner le projet en utilisant le terminal
 ```terminal
 git clone 
 ```
-3. -Il doit ouvrir le fichier **back-end* et le fichier **front-end** sur Vscode séparement pour eviter toute conflit.
-4. -Pour le back-end il doit ouvrir le terminal pour installer les dépendances
+3. Il doit ouvrir le fichier **back-end* et le fichier **front-end** sur Vscode séparement pour eviter toute conflit.
+4. Pour le back-end il doit ouvrir le terminal pour installer les dépendances
 ```terminal
 npm installe 
 ```
 ```terminal
 npm start 
 ```
+5. Observer la maquette figma pour reproduire le model.
+6. Lire les instructions du projets.
+
+**Bonne lecture et bon courage !**
