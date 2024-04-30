@@ -50,11 +50,11 @@
 
 1. -Le développeur doit aller sur le [lien Github](https://github.com/OpenClassrooms-Student-Center/Portfolio-architecte-sophie-bluel).
 2. -Il doit cloner le projet en utilisant le terminal
-```terminal 
-git clone ```
+```terminal```
+git clone 
 3. -Il doit ouvrir le fichier **back-end* et le fichier **front-end** sur Vscode séparement pour eviter toute conflit.
 4. -Pour le back-end il doit ouvrir le terminal pour installer les dépendances
-```terminal
-npm installe ```
-```terminal
-npm start ```
+```terminal```
+npm installe 
+```terminal```
+npm start 
