@@ -1,47 +1,46 @@
-# **
-Projet de Développement Web pour Architecte d'Intérieur **
+#**Projet de Développement Web pour Architecte d'Intérieur**
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 > *Ce projet consiste à créer une page web dynamique pour le site internet d'une architecte d'intérieur en utilisant JavaScript et en communiquant avec une API.
  Vous travaillerez sur la partie Front-End du site, développant la page de présentation des travaux de l'architecte à partir du HTML fourni. 
  Cela impliquera la gestion des événements utilisateurs et la manipulation des éléments du DOM avec JavaScript.*
  > *Projet accepté est réalisé par Stan Suhail Adhin.*
 
- ## *Contenu du Projet*
+ ##Contenu du Projet
  ------------------------------------------
-1. ### *Page de Présentation des Travaux*
+1. ###Page de Présentation des Travaux
 - Développement de la mise en page à partir des maquettes fournies via Figma.
 - Utilisation de JavaScript pour rendre la page interactive (gestion des événements, manipulation du DOM).
 
-2. ### *Page de Connexion pour l'Administrateur*
+2. ###Page de Connexion pour l'Administrateur
 - Création d'une page de connexion sécurisée pour l'administrateur du site.
 
-3. ### *Modale d'Upload de Médias*
+3. ###Modale d'Upload de Médias
 - Mise en place d'une modale permettant à l'administrateur de téléverser de nouveaux médias (images, vidéos, etc.).
 
-4. ### *Communication avec une API*
+4. ###Communication avec une API
 - Intégration d'un code back-end pour tester les fonctionnalités.
 - Apprentissage de la communication avec une API pour récupérer ou envoyer des données.
 
 --------------------------------------------------------------------------------------
 
-## **Outils Utilisés**
+##Outils Utilisés
 
-.*Figma* : Pour accéder aux maquettes et concevoir l'interface utilisateur.
-.*Visual Studio Code* : Environnement de développement pour écrire du code HTML, CSS et JavaScript.
-.*GitHub* : Plateforme de gestion de version pour suivre les modifications du projet et collaborer avec d'autres développeurs.
+-**Figma** : Pour accéder aux maquettes et concevoir l'interface utilisateur.
+-**Visual Studio Code** : Environnement de développement pour écrire du code HTML, CSS et JavaScript.
+-**GitHub** : Plateforme de gestion de version pour suivre les modifications du projet et collaborer avec d'autres développeurs.
 
 ---------------------------------------------------------------------------------------
 
-## **Compétences Acquises**
+##**Compétences Acquises**
 
-.*Développement Front-End avec JavaScript* : Création d'interactions utilisateur et manipulation du DOM pour rendre les pages web dynamiques.
-.*Gestion de Sessions Utilisateur* : Mise en place d'un système de connexion sécurisé pour l'administrateur du site.
-.*Intégration d'une Modale* : Utilisation de JavaScript pour afficher et gérer une modale d'upload de médias.
-.*Communication avec une API* : Apprentissage des requêtes HTTP pour échanger des données avec un serveur back-end.
+-**Développement Front-End avec JavaScript** : Création d'interactions utilisateur et manipulation du DOM pour rendre les pages web dynamiques.
+-**Gestion de Sessions Utilisateur** : Mise en place d'un système de connexion sécurisé pour l'administrateur du site.
+-**Intégration d'une Modale** : Utilisation de JavaScript pour afficher et gérer une modale d'upload de médias.
+-**Communication avec une API** : Apprentissage des requêtes HTTP pour échanger des données avec un serveur back-end.
 
 --------------------------------------------------------------------------------------------
 
-## **Importance pour la Carrière**
+##**Importance pour la Carrière**
 
 >La maîtrise de ces compétences est essentielle dans le développement web moderne. En apprenant à créer des pages web dynamiques avec JavaScript, 
 à gérer les interactions utilisateur et à communiquer avec des APIs, vous serez capable de développer des sites web interactifs et fonctionnels.
