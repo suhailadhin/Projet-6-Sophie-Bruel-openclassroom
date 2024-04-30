@@ -1,4 +1,5 @@
 **Projet de Développement Web pour Architecte d'Intérieur**
+![image d'illustration du projet](https://github.com/suhailadhin/Projet-6-Sophie-Bruel-openclassroom/blob/main/FrontEnd/assets/images/sophie%20bruel%20photo.JPG)
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 > *Ce projet consiste à créer une page web dynamique pour le site internet d'une architecte d'intérieur en utilisant JavaScript et en communiquant avec une API.
  Vous travaillerez sur la partie Front-End du site, développant la page de présentation des travaux de l'architecte à partir du HTML fourni. 
