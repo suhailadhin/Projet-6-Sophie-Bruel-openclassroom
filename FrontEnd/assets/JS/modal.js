@@ -1,7 +1,19 @@
+/* Partie modal */
+/*
+Récupération des balises du dialog 
+des icones/ des bouttons
+*/
+
 const boutonModifierProjet = document.getElementById('boutonModifierProjet');
 const dialog = document.querySelector('dialog');
 const token = localStorage.getItem('token');
 
+/* 
+Lorsque l'utilisateur est connecté, le boutton modifié s'affiche et lorsqu'il 
+clique la boite dialogue s'affiche 
+*/
+
+/*Evenement au clique de la modal*/
 
 boutonModifierProjet.addEventListener('click', () => {
   dialog.showModal();
@@ -13,15 +25,16 @@ closeIcon.addEventListener('click', () => {
 });
 
 
-/* Fetch works from the API */
+/* Faire appel au fetch pour récupérer la promesse via l'API */
 export async function getWorks() {
   const response = await fetch("http://localhost:5678/api/works");
   return await response.json();
 }
 
-/* Display works in the modal */
+/* Affichages des images dans la modale */
 async function affichageWorks() {
   const arrayWorks = await getWorks();
+ 
   const gallery = document.querySelector('.galerieModal');
 
   arrayWorks.forEach((work) => {
@@ -40,47 +53,43 @@ async function affichageWorks() {
     container.appendChild(img);
     gallery.appendChild(container);
 
-    // Delete image by icon
-    trashIcon.addEventListener('click', async () => {
-      gallery.removeChild(container); // Remove the image container from the gallery
+    /* suppression des images en cliquant sur l'icone trash */
 
-      // Remove the image from the database
-      await deleteWork(work.id);
+    trashIcon.addEventListener('click', async () => {
+      gallery.removeChild(container); 
+     
+      await deleteWorksData(work.id);
     });
   });
 }affichageWorks();
 
-/* Delete a work by its ID */
-async function deleteWork(workId) {
-  await fetch('http://localhost:5678/api/works/', {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
+/*Suppression des works de l'API
+*/
+// Mettre à jour la fonction deleteWorksData pour actualiser l'affichage après la suppression d'une image
+async function deleteWorksData(id) {
+  try {
+    const response = await fetch(`http://localhost:5678/api/works/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to delete image');
     }
-  });
+
+    // Actualiser l'affichage des images après la suppression
+    await affichageWorks();
+  } catch (error) {
+    console.error(error);
+  }
 }
 
-
-/* Delete all works */
-function deleteWorks() {
-  const trashAll = document.querySelectorAll(".fa-trash-can");
-  trashAll.forEach((trashIcon) => {
-    trashIcon.addEventListener('click', async () => {
-      const container = trashIcon.parentElement;
-      const img = container.querySelector('img');
-      const workId = getWorkIdFromImageUrl(img.src);
-
-      container.remove(); // Remove the image container from the gallery
-
-      // Remove the image from the database
-      await deleteWork(workId);
-    });
-  });
-}deleteWorks();
-
-/*ouverture de la modale pour l'edit image*/
-
+/* Evénement pour exécuter l'ouverture de la modale 
+avec la fonction d'écoute 
+*/
 
 const dialogModal = document.querySelector(".dialogModal");
 const fileEditForm = document.querySelector(".fileEdit");
@@ -106,6 +115,10 @@ closeIcon.addEventListener("click", function() {
   dialogModal.style.display = "block";
   fileEditForm.style.display = "none";
 });
+
+/* 
+Ajout image via la dialogue modal
+*/
 
 /* Ajout image via la dialogue modal*/
 
@@ -136,10 +149,9 @@ const fileInput = document.getElementById('file');
             formData.append('category', categoryInput);
 
             // Envoyer l'image via POST (simulation pour cet exemple)
-            fetch('/upload', {
+            fetch(`http://localhost:5678/api/works/${workId}`, {
                 method: 'POST',
-                body: {'Content-Type': 'application/json',
-                'Accept': 'application/json',}
+                body: formData,
             })
             .then(response => response.json())
             .then(data => {
@@ -152,20 +164,46 @@ const fileInput = document.getElementById('file');
         }
     });
 
-    function saveImage(data) {
-        let images = JSON.parse(localStorage.getItem('images')) || [];
-        images.push(data);
-        localStorage.setItem('images', JSON.stringify(images));
-        loadImages();
-        document.querySelector('dialog').close();
-    }
+    // Fonction pour générer les catégories dynamiquement
+function generateCategories(categories) {
+  const categorySelect = document.getElementById('category');
+  categories.forEach(category => {
+      const option = document.createElement('option');
+      option.value = category;
+      option.textContent = category;
+      categorySelect.appendChild(option);
+  });
+}
 
-    function loadImages() {
-        const images = JSON.parse(localStorage.getItem('images')) || [];
-        galerieModal.innerHTML = '';
-        images.forEach(image => {
-            const imgElement = document.createElement('img');
-            imgElement.src = image.url; // Supposons que 'url' est l'URL de l'image après l'upload
-            galerieModal.appendChild(imgElement);
-        });
-    }
+// Appeler une API ou utiliser des catégories prédéfinies
+const categories = ['Objets', 'Appartements', 'Hotels & restaurants']; // Exemple de catégories
+generateCategories(categories);
+
+const baseApiUrl = 'http://localhost:5678/api/works/'; // Adresse de base de l'API
+
+// Utilisation de la baseApiUrl avec l'identifiant du travail pour construire l'URL complète
+const workId = `${baseApiUrl}${yourWorkId}`; // Remplacez `yourWorkId` par l'identifiant spécifique du travai
+
+// Mettre à jour la fonction saveImage
+function saveImage(data) {
+  let images = JSON.parse(localStorage.getItem('images')) || [];
+  images.push(data);
+  localStorage.setItem('images', JSON.stringify(images));
+  // Ajouter l'image à la galerie modal
+  const imgElement = document.createElement('img');
+  imgElement.src = data.url; // Assuming 'url' is the property containing the image URL
+  galerieModal.appendChild(imgElement);
+  // Fermer la boîte de dialogue après avoir ajouté l'image
+  document.querySelector('dialog').close();
+}
+
+// Mettre à jour la fonction loadImages pour qu'elle affiche toutes les images
+function loadImages() {
+  const images = JSON.parse(localStorage.getItem('images')) || [];
+  galerieModal.innerHTML = ''; // Réinitialiser le contenu
+  images.forEach(image => {
+      const imgElement = document.createElement('img');
+      imgElement.src = image.url; 
+      galerieModal.appendChild(imgElement);
+  });
+}

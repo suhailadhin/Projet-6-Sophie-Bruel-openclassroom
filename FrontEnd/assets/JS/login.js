@@ -1,9 +1,14 @@
+/*Récuperation des éléments du HTML pour déclarer la variable*/
+
 const emailInput = document.querySelector("#email");
 const passwordInput = document.querySelector("#password");
 const form = document.querySelector("form");
 const errorMessage = document.querySelector(".login p");
 
-// Fonction pour effectuer la connexion
+/* Création de la fonction login pour que l'utilisateur puisse se connecter via la methode
+POST. 
+La fonction Token permet de communiqué avec l'API 
+*/
 async function login(email, password) {
   try {
     const response = await fetch("http://localhost:5678/api/users/login", {
@@ -32,7 +37,7 @@ async function login(email, password) {
   }
 }
 
-// Fonction pour gérer la soumission du formulaire
+/* Fonction pour gérer la soumission du formulaire */
 form.addEventListener("submit", async (event) => {
   event.preventDefault(); // Empêche la soumission par défaut du formulaire
 
@@ -40,25 +45,25 @@ form.addEventListener("submit", async (event) => {
   const password = passwordInput.value;
 
   try {
-    // Appeler la fonction login avec les identifiants de l'utilisateur
+    /* Appeler la fonction login avec les identifiants de l'utilisateur */
     const token = await login(email, password);
 
-    // Gérer la connexion réussie
+    /* Connexion réussie */
     handleLoginSuccess(token);
   } catch (error) {
-    // Gérer les erreurs de connexion
+    /* Les erreurs de connexion */
     handleLoginError(error);
   }
 });
 
-// Fonction pour gérer la connexion réussie
+/* Fonction pour gérer la connexion réussie */
 function handleLoginSuccess(token) {
   console.log("Connexion réussie. Token :", token);
   errorMessage.textContent = ""; // Effacer les éventuels messages d'erreur précédents
   window.location.href = "index.html"; // Rediriger l'utilisateur vers la page d'accueil
 }
 
-// Changement lorsque je me connecte
+/* Changement lorsque je me connecte */
 function toggleLogin() {
   const button = document.getElementById("loginButton");
   const token = localStorage.getItem('token');
@@ -73,24 +78,23 @@ function toggleLogin() {
   }
 }
 
-// Fonction pour gérer les erreurs de connexion
+/* Fonction pour gérer les erreurs de connexion et utilisation du message d'erreur */
 function handleLoginError(error) {
   console.error(error.message);
   errorMessage.textContent = error.message; // Afficher le message d'erreur dans l'élément errorMessage
 }
 
-// Fonction pour gérer la déconnexion
+/* Fonction pour gérer la déconnexion avec une fonction HandLogout */
 function handleLogout() {
   console.log("Déconnexion réussie.");
 
   localStorage.removeItem('token');
 
-  // Rediriger l'utilisateur vers la page d'accueil
+  /* Rediriger l'utilisateur vers la page d'accueil */
   window.location.href = "index.html";
-  toggleLogin(); // Appel de la fonction pour mettre à jour le bouton
+  toggleLogin();
 }
-
-// Appeler toggleLogin() pour définir l'état initial du bouton
+/* Appeler toggleLogin() pour définir l'état initial du bouton */
 toggleLogin();
 
 // Fonction pour gérer l'affichage du bouton "Modifier" en fonction de l'état de connexion
@@ -105,12 +109,10 @@ function gererBoutonModifierProjet() {
     if (token) {
       boutonModifierProjet.style.display = "block";
     } else {
-      boutonModifierProjet.style.display = "none"; // Masquer le bouton "Modifier" si l'utilisateur n'est pas connecté  
+      boutonModifierProjet.style.display = "none"; 
     }
   }
 }
-
-// Appeler la fonction pour gérer l'affichage du bouton "Modifier" lors du chargement de la page
 gererBoutonModifierProjet();
 
 function bannerEdit() {
@@ -126,10 +128,9 @@ function bannerEdit() {
     }
   }
 }
-
 bannerEdit();
 
-// Fonction pour cacher les boutons
+/* Fonction pour cacher les boutons lorsque l'utilisateur se connect */
 function hideButtons() {
   const btns = document.querySelectorAll(".categories");
 
@@ -137,7 +138,7 @@ function hideButtons() {
   
   if (!token) { // Vérifier si l'utilisateur est déconnecté
     btns.forEach(btn => {
-      btn.style.display = ""; // Afficher les boutons
+      btn.style.display = "flex"; // Afficher les boutons
     });
     return; // Sortir de la fonction si l'utilisateur est déconnecté
   }
@@ -149,7 +150,9 @@ function hideButtons() {
   });
 }
 
-//modal affiché par default lorsque je suis connecter//
+/* Si l'utilisateur se connecte le modal dialog s'affiche pour qu'il puisse filtrer
+les images {supprimer et ajouter les img} */
+
 function myModal () {
   const dialog = document.querySelector('dialog');
 
@@ -165,5 +168,4 @@ function myModal () {
 }
 myModal();
 
-// Appel de la fonction pour cacher les boutons au chargement de la page
 hideButtons();

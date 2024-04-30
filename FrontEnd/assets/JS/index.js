@@ -2,18 +2,23 @@ console.log("hey!");
 
 export const test = 'test'
 
-/*variable*/
+/* Sélection des éléments HTML et de faire un stockage dans les variables */
 const gallery = document.querySelector(".gallery");
 const filters = document.querySelector(".categories");
 
-//verifier que le json fonctione
+/* 
+Vérifier que le json fonctione en utilisant une fonction asynchrone et 
+de faire un fetch pour récuperer la promesse
+*/
 export async function getWorks() {
   const response = await fetch("http://localhost:5678/api/works");
-  return await response.json();
-  
+  return await response.json(); 
 }
 
-/*affichage works => galleries*/
+/* Utilisation de la fonction createElement 
+pour crée et affiché des images dans la gallerie en fessant appel à GetWorks (fetch)
+imbrication du forEach pour filtrer chaque image dans élément
+*/
 async function affichageWorks() {
  const arrayWorks = await getWorks();
  arrayWorks.forEach((work) => {
@@ -31,7 +36,7 @@ async function affichageWorks() {
 }
 affichageWorks();
 
-/*affichage bouton par catégorie*/
+/*Sélection de la balise categories pour affichée les bouttons*/
 //recupereration des catégorie//
 
 const categoryContainer = document.querySelector(".categories");
@@ -41,21 +46,24 @@ async function getCategorys() {
   return await response.json();
 }
 
-/*creation du boutton tous*/
+/*Crée un bouton spécifique par rapport aux autres pour filtrer les images
+avec un id
+*/
 
 const allBtn = document.createElement("button");
 allBtn.textContent = "Tous";
 allBtn.id = "all";
 filters.appendChild(allBtn); // Localisation categories
 
-//affiche tous les images
+//affiche tous les images en utilisant une fonction addEventlister pour écouter 
 allBtn.addEventListener("click", async () => {
   // faire appel a affichage works
   await affichageWorks();
 });
 
 
-/* Affichage des boutons par catégorie */
+/* Création via avec un promesse et afficher les boutons par catégorie */
+
 async function displayCategorysButtons() {
   const categorys = await getCategorys();
   console.log(categorys);
@@ -68,7 +76,7 @@ async function displayCategorysButtons() {
 }
 displayCategorysButtons();
 
-// Filtrer au clic par catégorie
+/* filtrage au clic en utilisant un forEach avec une fonction d'écoute */
 
 async function filterCategory() {
   const works = await getWorks();
@@ -100,4 +108,3 @@ async function filterCategory() {
   });
 }
 filterCategory();
-

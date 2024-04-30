@@ -186,9 +186,14 @@ footer nav ul {
 	margin: 2em
 }
 
-/*modification and add the new css class*/
+/*
+Classe css rajouter suite à une modification de la structure
+HTML et du Javascript
+*/
 
-/*banner style*/
+/*
+Partie Banner
+*/
 .banner-connexion {	
 	background-color:rgba(0, 0, 0, 1);
 	height: 59px;
@@ -211,6 +216,10 @@ footer nav ul {
 	gap: 60px;
 }
 
+/* stylissage du span dans 
+la partie Portfolio lorsque l'utilisateur est connecté
+*/
+
 #boutonModifierProjet {
 	font-weight: 500;
 	font-family: "Work Sans", sans-serif;
@@ -228,7 +237,7 @@ a {
 	color: inherit;
 }
 
-/*categorie style*/
+/*stylissage pour la partie Catégorie*/
 
 .categories {
 	display: flex;
@@ -237,6 +246,8 @@ a {
 	align-items: center;
 	gap: 10px;
 }
+
+/*style du bouton*/
 
 button {
 	cursor: pointer;
@@ -256,7 +267,9 @@ button:hover {
 	color: white;
 }
 
-/*login style*/
+/* 
+Stylissage de la partie Login
+*/
 
 h2{
 	display: flex;
@@ -302,6 +315,10 @@ p.nologin {
 	font-weight: bold;
 }
 
+/* Stylissage de la partie footer lorsque l'utilisateur se connecte
+sur la partie Login 
+*/
+
 footer {
 	background-color: white;
 	margin-top: auto;
@@ -312,11 +329,11 @@ footer {
 /*style categorie*/
 
 .categories-article {
-	display: block; /* Par défaut, l'article est visible */
+	display: block; 
   }
   
   .categories-article.hidden {
-	display: none; /* Si la classe hidden est présente, l'article est caché */
+	display: none;
   }
 
 p.bloc {
@@ -324,8 +341,7 @@ p.bloc {
 	display: flex;
 }
 
- /*modal syle {dialog balise}*/
-
+ /*Stylissage de la modale du dialog*/
 
 dialog {
 	border: rgba(0, 0, 0, 0.3) 2px solid;
@@ -342,16 +358,15 @@ section.dialogModal {
 .galerieModal {
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-	
-	gap: 10px;
-	
+	gap: 10px;	
 }
+
 .galerieModal img {
 	width: 100%;
 	margin-bottom: 20px;
 }
 
-/*position of trash*/
+/*position de l'icone trash*/
 .image-container {
 	position: relative;
 	display: inline-block;
@@ -368,13 +383,12 @@ section.dialogModal {
 	z-index: 1;
   }
 
-#closeIcon {
-	align-self: flex-end;
-	cursor: pointer;
+  /* Style pour l'icon close*/
+
+  #closeIcon {
 	border: none;
 	color: black;
-	padding-right: 1px;
-}
+  }  
 
 #closeIcon:hover {
 	background-color: transparent;
@@ -389,10 +403,10 @@ h3 {
 	}
 
 .ligne-horizontale {
-    border: 0; /* Supprime la bordure par défaut de <hr> */
-    height: 1px; /* épaisseur de la ligne */
+    border: 0; 
+    height: 1px; 
 	margin: 20px 0;
-    background-color: rgba(179, 179, 179, 1); /* couleur de la ligne */
+    background-color: rgba(179, 179, 179, 1);
 }
 
 dialog button#sendImg {
@@ -415,6 +429,10 @@ button#left {
 	border: none;
 	color: black;
 	display: none;
+}
+
+button#left:hover {
+	background-color: transparent;
 }
 
 #closeIcon {
@@ -505,7 +523,7 @@ button#left {
 }
 
 .valid:hover {
-    background-color: #0056b3;
+    background-color: #1D6154;
 }
 
 .ligne-horizontale {
@@ -515,7 +533,10 @@ button#left {
     border: 0.5px solid #e0e0e0;
 }
 
-/*Queries media*/
+/*
+Utilisation de la propriété
+ Queries media en bonus
+ */
 
 @media screen and (max-width: 768px) {
 
