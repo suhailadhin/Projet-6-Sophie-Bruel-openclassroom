@@ -69,7 +69,7 @@ async function displayCategorysButtons() {
   console.log(categorys);
   categorys.forEach(category => {
     const btn = document.createElement("button");
-    btn.textContent = category.name.toUpperCase();
+    btn.textContent = category.name.toLowerCase();
     btn.id = category.id;
     filters.appendChild(btn); //localisation categories
   });

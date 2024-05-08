@@ -65,7 +65,6 @@ async function affichageWorks() {
 
 /*Suppression des works de l'API
 */
-// Mettre à jour la fonction deleteWorksData pour actualiser l'affichage après la suppression d'une image
 async function deleteWorksData(id) {
   try {
     const response = await fetch(`http://localhost:5678/api/works/${id}`, {
@@ -80,7 +79,7 @@ async function deleteWorksData(id) {
       throw new Error('Failed to delete image');
     }
 
-    // Actualiser l'affichage des images après la suppression
+    /* Actualiser l'affichage des images après la suppression */
     await affichageWorks();
   } catch (error) {
     console.error(error);
@@ -116,11 +115,35 @@ closeIcon.addEventListener("click", function() {
   fileEditForm.style.display = "none";
 });
 
+/* Prévisualisez l'image sur la modale*/
+
+const previewImg = document.querySelector(".containerFile img");
+const inputFile = document.querySelector(".containerFile input");
+const labelFile = document.querySelector(".containerFile label");
+const icon = document.querySelector(".containerFile .fa-image");
+const pFile = document.querySelector(".containerFile p");
+
+inputFile.addEventListener("change", function() {
+  const file = inputFile.files[0];
+  console.log(file);
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      previewImg.src = e.target.result;
+      previewImg.style.display = "block"; // Utilisation de "block" au lieu de "flex" pour afficher l'image
+      labelFile.style.display = "none";
+      icon.style.display = "none"; // Correction du nom de la variable
+      pFile.style.display = "none";
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+
+
 /* 
 Ajout image via la dialogue modal
 */
-
-/* Ajout image via la dialogue modal*/
 
 const fileInput = document.getElementById('file');
     const galerieModal = document.querySelector('.galerieModal');
@@ -149,9 +172,12 @@ const fileInput = document.getElementById('file');
             formData.append('category', categoryInput);
 
             // Envoyer l'image via POST (simulation pour cet exemple)
-            fetch(`http://localhost:5678/api/works/${workId}`, {
+            fetch(`http://localhost:5678/api/works/`, {
                 method: 'POST',
                 body: formData,
+                headers: {
+                  'Content-Type': 'application/json',  
+                }
             })
             .then(response => response.json())
             .then(data => {
@@ -174,6 +200,7 @@ function generateCategories(categories) {
       categorySelect.appendChild(option);
   });
 }
+
 
 // Appeler une API ou utiliser des catégories prédéfinies
 const categories = ['Objets', 'Appartements', 'Hotels & restaurants']; // Exemple de catégories
