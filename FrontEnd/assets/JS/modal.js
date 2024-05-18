@@ -4,13 +4,26 @@ Récupération des balises du dialog
 des icones/ des bouttons
 */
 
+/*importation de la fontion works et categorys*/
+
+export async function getWorks() {
+  const response = await fetch("http://localhost:5678/api/works");
+  return await response.json(); 
+}
+
+async function getCategorys() {
+  const response = await fetch("http://localhost:5678/api/categories/");
+  return await response.json();
+}
+
 const boutonModifierProjet = document.getElementById('boutonModifierProjet');
 const dialog = document.querySelector('dialog');
 const token = localStorage.getItem('token');
 
 /* 
-Lorsque l'utilisateur est connecté, le boutton modifié s'affiche et lorsqu'il 
-clique la boite dialogue s'affiche 
+Lorsque l'utilisateur est connecté, il peut modifier les images en cliquant sur modifier
+, une boite de dialogue s'affiche. Il peut supprimer et ajouter des images grace à
+la modale.
 */
 
 /*Evenement au clique de la modal*/
@@ -25,46 +38,41 @@ closeIcon.addEventListener('click', () => {
 });
 
 
-/* Faire appel au fetch pour récupérer la promesse via l'API */
-export async function getWorks() {
-  const response = await fetch("http://localhost:5678/api/works");
-  return await response.json();
-}
-
 /* Affichages des images dans la modale */
 async function affichageWorks() {
   const arrayWorks = await getWorks();
- 
   const gallery = document.querySelector('.galerieModal');
 
   arrayWorks.forEach((work) => {
-    // Create container for the image and trash icon
+    // Création des éléments pour chaque image
     const container = document.createElement("div");
     container.className = "image-container";
 
-    const img = document.createElement("img");         
+    const figure = document.createElement("figure");  
+    const img = document.createElement("img");
+    const figcaption = document.createElement("figcaption");
+
     img.src = work.imageUrl;
-    img.alt = work.title;
+    figcaption.textContent = work.title;
 
-    const trashIcon = document.createElement("i");
-    trashIcon.className = "fa-solid fa-trash-can trash-icon";
-
-    container.appendChild(trashIcon);      
-    container.appendChild(img);
+    // Ajout des éléments à la galerie
+    figure.appendChild(img);
+    container.appendChild(figure);
     gallery.appendChild(container);
 
-    /* suppression des images en cliquant sur l'icone trash */
+    // Création de l'icône de la corbeille et ajout à la figure
+    const trashIcon = document.createElement("i");
+    trashIcon.className = "fa-solid fa-trash-can trash-icon";
+    figure.appendChild(trashIcon);
 
+    // Ajout d'un gestionnaire d'événements pour la suppression de l'image
     trashIcon.addEventListener('click', async () => {
-      gallery.removeChild(container); 
-     
       await deleteWorksData(work.id);
     });
   });
-}affichageWorks();
+}
 
-/*Suppression des works de l'API
-*/
+/*Suppression des images grace au backend*/
 async function deleteWorksData(id) {
   try {
     const response = await fetch(`http://localhost:5678/api/works/${id}`, {
@@ -79,23 +87,24 @@ async function deleteWorksData(id) {
       throw new Error('Failed to delete image');
     }
 
-    /* Actualiser l'affichage des images après la suppression */
-    await affichageWorks();
+    // Actualiser la page après la suppression
+    window.location.reload();
   } catch (error) {
     console.error(error);
   }
 }
+affichageWorks();
 
-/* Evénement pour exécuter l'ouverture de la modale 
-avec la fonction d'écoute 
+/* Récuperation des balises dans la boite de dialogue du modale 
 */
 
 const dialogModal = document.querySelector(".dialogModal");
 const fileEditForm = document.querySelector(".fileEdit");
-
 const sendImgButton = document.getElementById("sendImg");
 const containerIcon = document.querySelector(".iconModal");
 const iconLeft = document.getElementById('left');
+
+/* Evenement au clic lorsqu'on ouvre la modale*/
 
 containerIcon.addEventListener("click", function() {
   dialogModal.style.display = "";
@@ -139,98 +148,66 @@ inputFile.addEventListener("change", function() {
   }
 });
 
+/* Creation de la liste categorie sur l'input select name*/
 
-
-/* 
-Ajout image via la dialogue modal
-*/
-
-const fileInput = document.getElementById('file');
-    const galerieModal = document.querySelector('.galerieModal');
-    const validButton = document.querySelector('.valid');
-
-    // Charger les images du localStorage au démarrage
-    loadImages();
-
-    // Écouter le bouton "Ajouter une photo"
-    sendImgButton.addEventListener('click', () => {
-        document.querySelector('dialog').showModal();
-    });
-
-    // Écouter le bouton "Valider"
-    validButton.addEventListener('click', (e) => {
-        e.preventDefault();
-        const file = fileInput.files[0];
-        const textInput = document.getElementById('text').value;
-        const categoryInput = document.querySelector('.categorieInput select').value;
-
-        // Vérifier si une image a été sélectionnée
-        if (file) {
-            const formData = new FormData();
-            formData.append('image', file);
-            formData.append('text', textInput);
-            formData.append('category', categoryInput);
-
-            // Envoyer l'image via POST (simulation pour cet exemple)
-            fetch(`http://localhost:5678/api/works/`, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                  'Content-Type': 'application/json',  
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Sauvegarder l'image dans le localStorage
-                saveImage(data);
-            })
-            .catch(error => console.error('Error:', error));
-        } else {
-            alert('Veuillez sélectionner une image.');
-        }
-    });
-
-    // Fonction pour générer les catégories dynamiquement
-function generateCategories(categories) {
-  const categorySelect = document.getElementById('category');
-  categories.forEach(category => {
-      const option = document.createElement('option');
-      option.value = category;
-      option.textContent = category;
-      categorySelect.appendChild(option);
+async function displayCategoryModal() {
+  const select = document.querySelector("dialog select");
+  const categorys = await getCategorys();
+  categorys.forEach(category => {
+      const option = document.createElement("option");
+      option.value = category.id;
+      option.textContent = category.name;
+      select.appendChild(option);
   });
-}
+} 
+displayCategoryModal();
 
+/* Faire un POST pour ajouter une image depuis la modal */
 
-// Appeler une API ou utiliser des catégories prédéfinies
-const categories = ['Objets', 'Appartements', 'Hotels & restaurants']; // Exemple de catégories
-generateCategories(categories);
+const form = document.querySelector("dialog form");
+const title = document.querySelector("dialog .textInput");
+const category = document.querySelector("dialog .categorieInput");
 
-const baseApiUrl = 'http://localhost:5678/api/works/'; // Adresse de base de l'API
+// Ajouter un projet
+async function addWork(event) {
+  event.preventDefault();
 
-// Utilisation de la baseApiUrl avec l'identifiant du travail pour construire l'URL complète
-const workId = `${baseApiUrl}${yourWorkId}`; // Remplacez `yourWorkId` par l'identifiant spécifique du travai
+  if (title === "" || category === "" || image === undefined) {
+      alert("Merci de remplir tous les champs");
+      return;
+  } else if (category !== "1" && category !== "2" && category !== "3") {
+      alert("Merci de choisir une catégorie valide");
+      return;
+      } else {
+  try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("category", category);
+      formData.append("image", image);
 
-// Mettre à jour la fonction saveImage
-function saveImage(data) {
-  let images = JSON.parse(localStorage.getItem('images')) || [];
-  images.push(data);
-  localStorage.setItem('images', JSON.stringify(images));
-  // Ajouter l'image à la galerie modal
-  const imgElement = document.createElement('img');
-  imgElement.src = data.url; // Assuming 'url' is the property containing the image URL
-  galerieModal.appendChild(imgElement);
-  // Fermer la boîte de dialogue après avoir ajouté l'image
-  document.querySelector('dialog').close();
-}
+      const response = await fetch("http://localhost:5678/api/works", {
+          method: "POST",
+          headers: {
+              Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+      });
 
-// Mettre à jour la fonction loadImages pour qu'elle affiche toutes les images
-function loadImages() {
-  const images = JSON.parse(localStorage.getItem('images')) || [];
-  galerieModal.innerHTML = ''; // Réinitialiser le contenu
-  images.forEach(image => {
-      const imgElement = document.createElement('img');
-      imgElement.src = image.url; 
-      galerieModal.appendChild(imgElement);
-  });
-}
+      if (response.status === 201) {
+          alert("Projet ajouté avec succès :)");
+          modaleProjets(dataAdmin);
+          backToModale(event);
+          generationProjets(data, null);
+          
+      } else if (response.status === 400) {
+          alert("Merci de remplir tous les champs");
+      } else if (response.status === 500) {
+          alert("Erreur serveur");
+      } else if (response.status === 401) {
+          alert("Vous n'êtes pas autorisé à ajouter un projet");
+          window.location.href = "login.html";
+  }}
+
+  catch (error) {
+      console.log(error);
+}}}

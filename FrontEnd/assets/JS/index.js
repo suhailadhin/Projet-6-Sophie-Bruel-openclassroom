@@ -61,7 +61,6 @@ allBtn.addEventListener("click", async () => {
   await affichageWorks();
 });
 
-
 /* Création via avec un promesse et afficher les boutons par catégorie */
 
 async function displayCategorysButtons() {
@@ -69,7 +68,7 @@ async function displayCategorysButtons() {
   console.log(categorys);
   categorys.forEach(category => {
     const btn = document.createElement("button");
-    btn.textContent = category.name.toLowerCase();
+    btn.textContent = category.name;
     btn.id = category.id;
     filters.appendChild(btn); //localisation categories
   });
