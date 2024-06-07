@@ -166,17 +166,21 @@ displayCategoryModal();
 
 const form = document.querySelector("dialog form");
 const title = document.querySelector("dialog .textInput");
-const category = document.querySelector("dialog .categorieInput");
+const category = document.getElementById("category");
+const valid = document.querySelector(".valid");
+const image = document.getElementById('fileInput');
 
 // Ajouter un projet
+
+valid.addEventListener('click',addWork);
+
 async function addWork(event) {
+  console.log("cliquer!");
+  console.log(image);
   event.preventDefault();
 
   if (title === "" || category === "" || image === undefined) {
       alert("Merci de remplir tous les champs");
-      return;
-  } else if (category !== "1" && category !== "2" && category !== "3") {
-      alert("Merci de choisir une catégorie valide");
       return;
       } else {
   try {
