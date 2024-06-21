@@ -1,8 +1,4 @@
 /* Partie modal */
-/*
-Récupération des balises du dialog 
-des icones/ des bouttons
-*/
 
 /*importation de la fontion works et categorys*/
 
@@ -15,6 +11,11 @@ async function getCategorys() {
   const response = await fetch("http://localhost:5678/api/categories/");
   return await response.json();
 }
+
+/*
+Récupération des balises du dialog 
+des icones/ des bouttons
+*/
 
 const boutonModifierProjet = document.getElementById('boutonModifierProjet');
 const dialog = document.querySelector('dialog');
@@ -90,7 +91,7 @@ async function deleteWorksData(id) {
     // Actualiser la page après la suppression
     window.location.reload();
   } catch (error) {
-    console.error(error);
+    
   }
 }
 affichageWorks();
@@ -134,7 +135,7 @@ const pFile = document.querySelector(".containerFile p");
 
 inputFile.addEventListener("change", function() {
   const file = inputFile.files[0];
-  console.log(file);
+  
   if (file) {
     const reader = new FileReader();
     reader.onload = function(e) {
@@ -165,44 +166,42 @@ displayCategoryModal();
 /* Faire un POST pour ajouter une image depuis la modal */
 
 const form = document.querySelector("dialog form");
-const title = document.querySelector("dialog .textInput");
+const title = document.getElementById("text");
 const category = document.getElementById("category");
 const valid = document.querySelector(".valid");
 const image = document.getElementById('fileInput');
 
 // Ajouter un projet
 
-valid.addEventListener('click',addWork);
+valid.addEventListener('click', addWork);
 
 async function addWork(event) {
   console.log("cliquer!");
-  console.log(image);
+  console.log("category",category.value);
+  console.log("title",title.value);
   event.preventDefault();
 
-  if (title === "" || category === "" || image === undefined) {
+  if (title.value.trim() === "" || category.value === "" || !image.files.length) {
       alert("Merci de remplir tous les champs");
       return;
-      } else {
+  }
+
   try {
       const formData = new FormData();
-      formData.append("title", title);
-      formData.append("category", category);
-      formData.append("image", image);
+      formData.append("title", title.value);
+      formData.append("category", category.value);
+      formData.append("image", image.files[0]);
 
       const response = await fetch("http://localhost:5678/api/works", {
           method: "POST",
           headers: {
-              Authorization: `Bearer ${token}`,
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
           },
           body: formData,
       });
 
       if (response.status === 201) {
-          alert("Projet ajouté avec succès :)");
-          modaleProjets(dataAdmin);
-          backToModale(event);
-          generationProjets(data, null);
-          
+          alert("Projet ajouté avec succès :)");     
       } else if (response.status === 400) {
           alert("Merci de remplir tous les champs");
       } else if (response.status === 500) {
@@ -210,8 +209,9 @@ async function addWork(event) {
       } else if (response.status === 401) {
           alert("Vous n'êtes pas autorisé à ajouter un projet");
           window.location.href = "login.html";
-  }}
+      }
 
-  catch (error) {
-      console.log(error);
-}}}
+  } catch (error) {
+    console.log(error);
+  }
+}

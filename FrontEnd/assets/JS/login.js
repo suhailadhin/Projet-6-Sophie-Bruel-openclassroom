@@ -1,5 +1,4 @@
 /*Récuperation des éléments du HTML pour déclarer la variable*/
-
 const emailInput = document.querySelector("#email");
 const passwordInput = document.querySelector("#password");
 const form = document.querySelector("form");
@@ -58,7 +57,7 @@ form.addEventListener("submit", async (event) => {
 
 /* Fonction pour gérer la connexion réussie */
 function handleLoginSuccess(token) {
-  console.log("Connexion réussie. Token :", token);
+  
   errorMessage.textContent = ""; // Effacer les éventuels messages d'erreur précédents
   window.location.href = "index.html"; // Rediriger l'utilisateur vers la page d'accueil
 }
@@ -80,13 +79,13 @@ function toggleLogin() {
 
 /* Fonction pour gérer les erreurs de connexion et utilisation du message d'erreur */
 function handleLoginError(error) {
-  console.error(error.message);
+  
   errorMessage.textContent = error.message; // Afficher le message d'erreur dans l'élément errorMessage
 }
 
 /* Fonction pour gérer la déconnexion avec une fonction HandLogout */
 function handleLogout() {
-  console.log("Déconnexion réussie.");
+  
 
   localStorage.removeItem('token');
 

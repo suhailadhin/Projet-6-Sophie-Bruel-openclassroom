@@ -1,7 +1,3 @@
-console.log("hey!");
-
-export const test = 'test'
-
 /* Sélection des éléments HTML et de faire un stockage dans les variables */
 const gallery = document.querySelector(".gallery");
 const filters = document.querySelector(".categories");
@@ -65,7 +61,7 @@ allBtn.addEventListener("click", async () => {
 
 async function displayCategorysButtons() {
   const categorys = await getCategorys();
-  console.log(categorys);
+  
   categorys.forEach(category => {
     const btn = document.createElement("button");
     btn.textContent = category.name;
@@ -79,7 +75,7 @@ displayCategorysButtons();
 
 async function filterCategory() {
   const works = await getWorks();
-  console.log(works);
+  
   const buttons = document.querySelectorAll(".categories button"); // Sélectionnez les boutons de catégorie
   buttons.forEach(button => {
     button.addEventListener("click", (e) => {
@@ -102,7 +98,7 @@ async function filterCategory() {
           gallery.appendChild(figure);
         });
       }
-      console.log(btnId);
+     
     });
   });
 }
