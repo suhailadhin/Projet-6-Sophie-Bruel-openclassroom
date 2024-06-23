@@ -176,9 +176,7 @@ const image = document.getElementById('fileInput');
 valid.addEventListener('click', addWork);
 
 async function addWork(event) {
-  console.log("cliquer!");
-  console.log("category",category.value);
-  console.log("title",title.value);
+
   event.preventDefault();
 
   if (title.value.trim() === "" || category.value === "" || !image.files.length) {
@@ -201,7 +199,8 @@ async function addWork(event) {
       });
 
       if (response.status === 201) {
-          alert("Projet ajouté avec succès :)");     
+          alert("Projet ajouté avec succès :)"); 
+          window.location.reload();   
       } else if (response.status === 400) {
           alert("Merci de remplir tous les champs");
       } else if (response.status === 500) {
