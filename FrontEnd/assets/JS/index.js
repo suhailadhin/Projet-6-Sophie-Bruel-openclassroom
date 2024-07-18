@@ -33,7 +33,7 @@ async function affichageWorks() {
 affichageWorks();
 
 /*Sélection de la balise categories pour affichée les bouttons*/
-//recupereration des catégorie//
+/*recupereration des catégorie*/
 
 const categoryContainer = document.querySelector(".categories");
 
@@ -49,11 +49,11 @@ avec un id
 const allBtn = document.createElement("button");
 allBtn.textContent = "Tous";
 allBtn.id = "all";
-filters.appendChild(allBtn); // Localisation categories
+filters.appendChild(allBtn); 
 
-//affiche tous les images en utilisant une fonction addEventlister pour écouter 
+/*affiche tous les images en utilisant une fonction addEventlister pour écouter */
 allBtn.addEventListener("click", async () => {
-  // faire appel a affichage works
+  /* faire appel a affichage works*/
   await affichageWorks();
 });
 
@@ -66,7 +66,7 @@ async function displayCategorysButtons() {
     const btn = document.createElement("button");
     btn.textContent = category.name;
     btn.id = category.id;
-    filters.appendChild(btn); //localisation categories
+    filters.appendChild(btn); 
   });
 }
 displayCategorysButtons();
@@ -76,7 +76,7 @@ displayCategorysButtons();
 async function filterCategory() {
   const works = await getWorks();
   
-  const buttons = document.querySelectorAll(".categories button"); // Sélectionnez les boutons de catégorie
+  const buttons = document.querySelectorAll(".categories button"); 
   buttons.forEach(button => {
     button.addEventListener("click", (e) => {
       const btnId = e.target.id;
@@ -86,8 +86,8 @@ async function filterCategory() {
           return work.categoryId == btnId;
         });
         worksTriCategory.forEach(work => {
-          // Créez les éléments à afficher (vous devez implémenter createWorks())
-          // createWorks(work);
+          /* Créez les éléments à afficher (vous devez implémenter createWorks())
+          // createWorks(work);*/
           const figure = document.createElement("figure");
           const img = document.createElement("img");
           const figcaption = document.createElement("figcaption");

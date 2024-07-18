@@ -44,8 +44,8 @@ async function affichageWorks() {
   const arrayWorks = await getWorks();
   const gallery = document.querySelector('.galerieModal');
 
-  arrayWorks.forEach((work) => {
-    // Création des éléments pour chaque image
+  arrayWorks.forEach(async (work) => {
+    /*Création des éléments pour chaque image */
     const container = document.createElement("div");
     container.className = "image-container";
 
@@ -56,44 +56,49 @@ async function affichageWorks() {
     img.src = work.imageUrl;
     figcaption.textContent = work.title;
 
-    // Ajout des éléments à la galerie
+    /* Ajout des éléments à la galerie */
     figure.appendChild(img);
     container.appendChild(figure);
     gallery.appendChild(container);
 
-    // Création de l'icône de la corbeille et ajout à la figure
+    /* Création de l'icône de la corbeille et ajout à la figure */
     const trashIcon = document.createElement("i");
     trashIcon.className = "fa-solid fa-trash-can trash-icon";
     figure.appendChild(trashIcon);
 
-    // Ajout d'un gestionnaire d'événements pour la suppression de l'image
+    /* Ajout d'un gestionnaire d'événements pour la suppression de l'image */
     trashIcon.addEventListener('click', async () => {
-      await deleteWorksData(work.id);
+      try {
+        await deleteWorksData(work.id); 
+        container.remove(); 
+      } catch (error) {
+        console.error('Erreur lors de la suppression de l\'image :', error);
+        alert('Une erreur est survenue lors de la suppression de l\'image');
+      }
     });
   });
 }
 
-/*Suppression des images grace au backend*/
 async function deleteWorksData(id) {
   try {
-    const response = await fetch(`http://localhost:5678/api/works/${id}`, {
+    const url = `http://localhost:5678/api/works/${id}`;
+    const options = {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
-    });
+    };
 
+    const response = await fetch(url, options);
     if (!response.ok) {
       throw new Error('Failed to delete image');
     }
-
-    // Actualiser la page après la suppression
-    window.location.reload();
   } catch (error) {
-    
+    throw new Error('Failed to delete image');
   }
 }
+
 affichageWorks();
 
 /* Récuperation des balises dans la boite de dialogue du modale 
@@ -140,9 +145,9 @@ inputFile.addEventListener("change", function() {
     const reader = new FileReader();
     reader.onload = function(e) {
       previewImg.src = e.target.result;
-      previewImg.style.display = "block"; // Utilisation de "block" au lieu de "flex" pour afficher l'image
+      previewImg.style.display = "block"; 
       labelFile.style.display = "none";
-      icon.style.display = "none"; // Correction du nom de la variable
+      icon.style.display = "none"; 
       pFile.style.display = "none";
     };
     reader.readAsDataURL(file);
@@ -152,8 +157,10 @@ inputFile.addEventListener("change", function() {
 /* Creation de la liste categorie sur l'input select name*/
 
 async function displayCategoryModal() {
+
   const select = document.querySelector("dialog select");
   const categorys = await getCategorys();
+
   categorys.forEach(category => {
       const option = document.createElement("option");
       option.value = category.id;
@@ -176,41 +183,53 @@ const image = document.getElementById('fileInput');
 valid.addEventListener('click', addWork);
 
 async function addWork(event) {
-
   event.preventDefault();
 
   if (title.value.trim() === "" || category.value === "" || !image.files.length) {
-      alert("Merci de remplir tous les champs");
-      return;
+    alert("Merci de remplir tous les champs");
+    return;
   }
 
   try {
-      const formData = new FormData();
-      formData.append("title", title.value);
-      formData.append("category", category.value);
-      formData.append("image", image.files[0]);
+    const formData = new FormData();
+    formData.append("title", title.value);
+    formData.append("category", category.value);
+    formData.append("image", image.files[0]);
 
-      const response = await fetch("http://localhost:5678/api/works", {
-          method: "POST",
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          },
-          body: formData,
-      });
+    /* remplace le Fetch */
 
-      if (response.status === 201) {
-          alert("Projet ajouté avec succès :)"); 
-          window.location.reload();   
-      } else if (response.status === 400) {
-          alert("Merci de remplir tous les champs");
-      } else if (response.status === 500) {
-          alert("Erreur serveur");
-      } else if (response.status === 401) {
-          alert("Vous n'êtes pas autorisé à ajouter un projet");
-          window.location.href = "login.html";
-      }
+    const url = "http://localhost:5678/api/works/";
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: formData,
+    });
+
+      /* Réinitialiser les champs après l'ajout réussi */
+      title.value = "";
+      category.value = "";
+      image.value = "";
+
+
+     if (response.status === 201) {
+      alert("Projet ajouté avec succès :)");
+
+    } else if (response.status === 400) {
+      alert("Merci de remplir tous les champs");
+    } else if (response.status === 500) {
+      alert("Erreur serveur");
+    } else if (response.status === 401) {
+      alert("Vous n'êtes pas autorisé à ajouter un projet");
+      window.location.href = "login.html";
+    } else {
+      /* Gérer d'autres codes d'erreur ici si nécessaire */
+      alert(`Erreur inattendue: ${response.status}`);
+    }
 
   } catch (error) {
-    console.log(error);
+    console.error('Erreur lors de l\'ajout du projet :', error);
+    alert('Une erreur est survenue lors de l\'ajout du projet');
   }
 }
