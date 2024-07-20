@@ -2,15 +2,8 @@
 
 /*importation de la fontion works et categorys*/
 
-export async function getWorks() {
-  const response = await fetch("http://localhost:5678/api/works");
-  return await response.json(); 
-}
-
-async function getCategorys() {
-  const response = await fetch("http://localhost:5678/api/categories/");
-  return await response.json();
-}
+import { getWorks } from './index.js';
+import { getCategorys } from './index.js';
 
 /*
 Récupération des balises du dialog 

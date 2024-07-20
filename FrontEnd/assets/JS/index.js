@@ -7,8 +7,16 @@ Vérifier que le json fonctione en utilisant une fonction asynchrone et
 de faire un fetch pour récuperer la promesse
 */
 export async function getWorks() {
-  const response = await fetch("http://localhost:5678/api/works");
-  return await response.json(); 
+  return getApi("http://localhost:5678/api/works/");
+}
+
+export async function getCategorys() {
+  return getApi("http://localhost:5678/api/categories/");
+}
+
+export async function getApi(endpoint) {
+  const response = await fetch(endpoint)
+  return await response.json();
 }
 
 /* Utilisation de la fonction createElement 
@@ -37,10 +45,6 @@ affichageWorks();
 
 const categoryContainer = document.querySelector(".categories");
 
-async function getCategorys() {
-  const response = await fetch("http://localhost:5678/api/categories/");
-  return await response.json();
-}
 
 /*Crée un bouton spécifique par rapport aux autres pour filtrer les images
 avec un id
